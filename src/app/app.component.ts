@@ -54,6 +54,29 @@ export class AppComponent {
         eventChange: this.onChange.bind(this), // É chamado após o evento ser alterado quando é arrastado ou aumenta o tamanho. Para salvar no banco de dados
         eventRemove: this.onRemove.bind(this), // É chamado após o evento ser removido do calendário. Para excluir do banco de dados
         eventsSet: this.handleEvents.bind(this), // Usado sempre após qualquer operação. Seja adicionar ou remover ou ao iniciar ocalendario
+        events: [ // Aqui é usado para mostrar como funciona a recorrência de compromissos
+            {
+              groupId: 'blueEvents', // Eventos recorrentes que possuem groupId, quando alterados, todos são alterados
+              daysOfWeek: [ '4' ],
+              startTime: '10:45:00',
+              endTime: '12:45:00'
+            },
+            {
+              daysOfWeek: [ '3' ], // Como não tem groupId, somente um evento é alterado
+              startTime: '11:00:00',
+              endTime: '11:30:00',
+              color: 'red'
+            },
+            {
+                daysOfWeek: [ '1' ], // Como não tem groupId não somente esse é alterado com título
+                startRecur: '2022-06-27', // Aqui vale um detalhe. 
+                endRecur: '2022-07-11',// Aqui deve ser informada uma data com 1 dia mais. Pois se não colocar, ele conta a data que está colocada aqui e não mostra na recorrência
+                startTime: '11:00:00',
+                endTime: '11:30:00',
+                color: 'black',
+                title: 'Teste verde'
+              }
+          ]
     };
 
     // Aqui é usado quando clicamos no espaço do evento no calendário. Nesse caso, para excluir o evento
