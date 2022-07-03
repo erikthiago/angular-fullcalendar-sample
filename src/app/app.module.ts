@@ -14,6 +14,7 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { MaterialComponentsModule } from './material.components.module';
 import { TitleDialogComponent } from './dialog/title-dialog/title-dialog.component';
 import { DeleteDialogComponent } from './dialog/delete-dialog/delete-dialog.component';
+import { ErrorDialogComponent } from './dialog/error-dialog/error-dialog.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -25,7 +26,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   declarations: [
     AppComponent,
     TitleDialogComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule,
