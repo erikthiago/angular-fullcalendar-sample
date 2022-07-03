@@ -5,6 +5,7 @@ import { CalendarOptions, DateSelectArg, EventAddArg, EventApi, EventChangeArg, 
 import { DateClickArg } from '@fullcalendar/interaction';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { DeleteDialogComponent } from './dialog/delete-dialog/delete-dialog.component';
+import { ErrorDialogComponent } from './dialog/error-dialog/error-dialog.component';
 import { TitleDialogComponent } from './dialog/title-dialog/title-dialog.component';
 
 @Component({
@@ -75,8 +76,17 @@ export class AppComponent {
                 endTime: '11:30:00',
                 color: 'black',
                 title: 'Teste verde'
+              },
+              { // this object will be "parsed" into an Event Object
+                title: 'The Title', // a property!
+                start: '2022-06-27', // a property!
+                end: '2022-06-27' // a property! ** see important note below about 'end' **
               }
           ]
+        //events: { // Aqui é usado pra mostrar como fazer a integração do full calendar com uma API
+        //    url: 'suaUrl', // O retorno da API deve estar compatível com a documentação
+        //    failure: this.showErrorDialog.bind(this) // O link da documentação é: https://fullcalendar.io/docs/events-json-feed
+       // }
     };
 
     // Aqui é usado quando clicamos no espaço do evento no calendário. Nesse caso, para excluir o evento
@@ -147,7 +157,7 @@ export class AppComponent {
 
     // Aqui usamos para ao adicionar o evento no calendário, chamar uma api externa para salvar no banco de dados
     onSubmit(event: EventAddArg) {
-        console.log('Salvar no banco de dados', event.event.title);
+        console.log('Salvar no banco de dados', event.event.title);        
         // Rotina abaixo usada exlusivamente para quando usamos o ngxSmartModalService
         //this.ngxSmartModalService.resetModalData('myModal');
         //this.title = '';
@@ -206,5 +216,15 @@ export class AppComponent {
             this.ngxSmartModalService.resetModalData('myModalDelete');
             this.ngxSmartModalService.getModal('myModalDelete').close();
         }
+    }
+
+    // Aqui é quando ocorre erro ao buscar compromissos da API
+    showErrorDialog() {
+        // Rotina abaixo usada exclusivamente quando usamos o MatDialog do material angular
+        const dialogRef = this.dialog.open(ErrorDialogComponent, {
+            width: '350px'
+        });
+
+        dialogRef.afterClosed().subscribe(result => { });
     }
 }
