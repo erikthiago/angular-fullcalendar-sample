@@ -23,7 +23,7 @@ export class AppComponent {
 
     // Link usado como base para criar as configs do FullCalendar: https://fullcalendar.io/docs#toc
     calendarOptions: CalendarOptions = {
-        initialView: 'dayGridMonth', // Definindo a visão principal na tela para mostrar a visão do mês com os dias
+        initialView: 'timeGridWeek', // Definindo a visão principal na tela para mostrar a visão do mês com os dias
         locale: 'pt-br', // Definindo que a localização é brasileira
         headerToolbar: { // Definindo como será mostrados os elementos no cabeçalho do calendario
             left: 'prev,next today', // Na esqueda temos os botões de anterior, proximo e hoje
@@ -56,37 +56,52 @@ export class AppComponent {
         eventRemove: this.onRemove.bind(this), // É chamado após o evento ser removido do calendário. Para excluir do banco de dados
         eventsSet: this.handleEvents.bind(this), // Usado sempre após qualquer operação. Seja adicionar ou remover ou ao iniciar ocalendario
         events: [ // Aqui é usado para mostrar como funciona a recorrência de compromissos
-            {
-              groupId: 'blueEvents', // Eventos recorrentes que possuem groupId, quando alterados, todos são alterados
-              daysOfWeek: [ '4' ],
-              startTime: '10:45:00',
-              endTime: '12:45:00'
+            // {
+            //     groupId: 'blueEvents', // Eventos recorrentes que possuem groupId, quando alterados, todos são alterados
+            //     daysOfWeek: ['4'],
+            //     startTime: '10:45:00',
+            //     endTime: '12:45:00'
+            // },
+            // {
+            //     daysOfWeek: ['3'], // Como não tem groupId, somente um evento é alterado
+            //     startTime: '11:00:00',
+            //     endTime: '11:30:00',
+            //     color: 'red'
+            // },
+            { 
+                id: 'teste',
+                title: 'Teste preto',
+                daysOfWeek: ['3'], // Como não tem groupId não somente esse é alterado com título
+                startRecur: '2022-10-06', // Aqui vale um detalhe. 
+                endRecur: '2022-10-21',// Aqui deve ser informada uma data com 1 dia mais. Pois se não colocar, ele conta a data que está colocada aqui e não mostra na recorrência
+                startTime: '11:00:00',
+                endTime: '11:30:00',
+                color: '#E3FF33', // O color aqui é um alias para backGround e border color. Ou seja, na visão dia e semana, a linha fica toda preenchida. No mês muda a cor da bolinha
+                textColor: '#FF8633' // Muda a cor do texto
             },
-            {
-              daysOfWeek: [ '3' ], // Como não tem groupId, somente um evento é alterado
-              startTime: '11:00:00',
-              endTime: '11:30:00',
-              color: 'red'
-            },
-            {
-                daysOfWeek: [ '1' ], // Como não tem groupId não somente esse é alterado com título
-                startRecur: '2022-06-27', // Aqui vale um detalhe. 
-                endRecur: '2022-07-11',// Aqui deve ser informada uma data com 1 dia mais. Pois se não colocar, ele conta a data que está colocada aqui e não mostra na recorrência
+            { // Mostrando que funciona com todos os campos juntos
+                daysOfWeek: ["3"], // Como não tem groupId não somente esse é alterado com título
+                startRecur: '2022-07-06', // Aqui vale um detalhe. 
+                endRecur: '2022-07-21',// Aqui deve ser informada uma data com 1 dia mais. Pois se não colocar, ele conta a data que está colocada aqui e não mostra na recorrência
                 startTime: '11:00:00',
                 endTime: '11:30:00',
                 color: 'black',
-                title: 'Teste verde'
-              },
-              { // this object will be "parsed" into an Event Object
+                title: 'Teste verde aspas duplas',
+                start: '2022-07-06', // a property!
+                end: '2022-07-06' // a property! ** see important note below about 'end' **
+            },
+            { // this object will be "parsed" into an Event Object
                 title: 'The Title', // a property!
-                start: '2022-06-27', // a property!
-                end: '2022-06-27' // a property! ** see important note below about 'end' **
-              }
-          ]
+                start: '2022-06-27T15:00:00', // a property!
+                end: '2022-06-27T15:40:00' // a property! ** see important note below about 'end' **
+            }
+        ]
+        // eventSources: [// Forma de chamar várias apis para pegar compromissos
+        // ]
         //events: { // Aqui é usado pra mostrar como fazer a integração do full calendar com uma API
         //    url: 'suaUrl', // O retorno da API deve estar compatível com a documentação
         //    failure: this.showErrorDialog.bind(this) // O link da documentação é: https://fullcalendar.io/docs/events-json-feed
-       // }
+        // }
     };
 
     // Aqui é usado quando clicamos no espaço do evento no calendário. Nesse caso, para excluir o evento
@@ -157,7 +172,7 @@ export class AppComponent {
 
     // Aqui usamos para ao adicionar o evento no calendário, chamar uma api externa para salvar no banco de dados
     onSubmit(event: EventAddArg) {
-        console.log('Salvar no banco de dados', event.event.title);        
+        console.log('Salvar no banco de dados', event.event.title);
         // Rotina abaixo usada exlusivamente para quando usamos o ngxSmartModalService
         //this.ngxSmartModalService.resetModalData('myModal');
         //this.title = '';
